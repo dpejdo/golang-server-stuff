@@ -12,23 +12,27 @@ func main() {
 	}
 
 	log.Println("started on port 8080")
-	conn, err := listener.Accept()
-	if err != nil {
-		log.Printf("error while accepting connection %+v ", err)
-		return
+
+	for {
+
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Printf("error while accepting connection %+v ", err)
+			return
+		}
+		var data []byte
+		_, err = conn.Read(data)
+
+		if err != nil {
+			log.Printf("Error while parsing data %+v", err)
+			return
+		}
+
+		log.Println(string(data))
+
+		conn.Write([]byte("hello"))
+		conn.Close()
+
 	}
-
-	var data []byte
-	_, err = conn.Read(data)
-
-	if err != nil {
-		log.Printf("Error while parsing data %+v", err)
-		return
-	}
-
-	log.Println(string(data))
-
-	conn.Write([]byte("hello"))
-	conn.Close()
 
 }
