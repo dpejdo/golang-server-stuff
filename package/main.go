@@ -5,11 +5,10 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 )
 
 func main() {
-	n := rand.Intn(100)
+	n := randomNumber()
 
 	fmt.Println(n)
 }
