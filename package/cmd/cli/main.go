@@ -4,12 +4,14 @@
 package main
 
 import (
-	"fmt"
 	"package/internal/random"
+
+	"github.com/fatih/color"
 )
 
 func main() {
-	n := random.RandomNumber()
 
-	fmt.Println(n)
+	blue := color.New(color.FgBlue)
+
+	blue.Printf("lucky number: %d", random.RandomNumber())
 }
