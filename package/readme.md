@@ -26,3 +26,19 @@ now app is executable with `./cmd/cli`
 relative paths ensures that path is interpreted correctly
 
 **any packages under internal cannot be imported by code outside of the "package" directory.**
+
+## Convention for ordering imports
+
+Run `go fmt` to sort imports alphabetically
+
+```
+import (
+    {standard library packages}
+
+    {packages from the current module}
+
+    {third-party packages}
+
+    {aliased packages}
+)
+```
