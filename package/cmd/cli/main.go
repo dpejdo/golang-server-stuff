@@ -5,7 +5,7 @@ package main
 
 import (
 	"fmt"
-	"package/random"
+	"package/internal/random"
 )
 
 func main() {

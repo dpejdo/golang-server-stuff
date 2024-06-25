@@ -17,3 +17,12 @@ To export something it needs to be **Capitalized**, if it's start with lower cas
 Importing something if it's in the same module, start the path from `go.mod` file then path to the desired package
 
 `import {module path}/{path to the package relative to your go.mod file}`
+
+## Making complex file structure
+
+This is a bit over complex for this it's just to test exec app
+
+now app is executable with `./cmd/cli`
+relative paths ensures that path is interpreted correctly
+
+**any packages under internal cannot be imported by code outside of the "package" directory.**
