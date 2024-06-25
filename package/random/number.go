@@ -1,7 +1,7 @@
-package main
+package random
 
 import "math/rand"
 
-func randomNumber() int {
+func RandomNumber() int {
 	return rand.Intn(100)
 }
