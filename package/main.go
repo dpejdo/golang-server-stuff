@@ -5,10 +5,11 @@ package main
 
 import (
 	"fmt"
+	"package/random"
 )
 
 func main() {
-	n := randomNumber()
+	n := random.RandomNumber()
 
 	fmt.Println(n)
 }
