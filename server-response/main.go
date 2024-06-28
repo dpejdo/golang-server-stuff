@@ -20,8 +20,10 @@ type Person struct {
 func serverHtmlTemplate(w http.ResponseWriter, r *http.Request) {
 	person := Person{Name: "John", Hobbies: []string{"coding", "reading"}}
 
+	lp := path.Join("templates", "layout.html")
 	fp := path.Join("templates", "index.html")
-	tmpl, err := template.ParseFiles(fp)
+
+	tmpl, err := template.ParseFiles(lp, fp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
