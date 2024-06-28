@@ -1,19 +1,33 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"path"
+	"text/template"
 )
 
 func main() {
-	http.HandleFunc("/", serveFile)
+	http.HandleFunc("/", serverHtmlTemplate)
 	http.ListenAndServe(":3000", nil)
-	fmt.Print("listening on port 3000")
 
 }
 
-func serveFile(w http.ResponseWriter, r *http.Request) {
-	fp := path.Join("images", "foo.png")
-	http.ServeFile(w, r, fp)
+type Person struct {
+	Name    string
+	Hobbies []string
+}
+
+func serverHtmlTemplate(w http.ResponseWriter, r *http.Request) {
+	person := Person{Name: "John", Hobbies: []string{"coding", "reading"}}
+
+	fp := path.Join("templates", "index.html")
+	tmpl, err := template.ParseFiles(fp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	if err := tmpl.Execute(w, person); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 }
