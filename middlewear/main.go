@@ -2,41 +2,42 @@ package main
 
 import (
 	"log"
+	"mime"
 	"net/http"
 )
 
-func middlewearOne(next http.Handler) http.Handler {
+func enforceJSONHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Print("Executing middlewear one")
-		next.ServeHTTP(w, r)
-		log.Print("Again executing middlewear one")
-	})
-}
+		contentType := r.Header.Get("Content-Type")
 
-func middlewearTwo(next http.Handler) http.Handler {
+		if contentType != "" {
+			mt, _, err := mime.ParseMediaType(contentType)
+			if err != nil {
+				http.Error(w, "Malformed Content-Type header", http.StatusBadRequest)
+				return
+			}
 
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Print("Executing middlewear two")
-		if r.URL.Path == "/foo" {
-			return
+			if mt != "application/json" {
+				http.Error(w, "Content-Type header must be application/json", http.StatusUnsupportedMediaType)
+				return
+			}
 		}
 
 		next.ServeHTTP(w, r)
-		log.Print("Again executing middleear two")
 	})
-
 }
 
-func finalHandler(w http.ResponseWriter, r *http.Request) {
-	log.Print("executing final handler")
-	w.Write([]byte("ok"))
-
+func final(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
 }
+
 func main() {
 	mux := http.NewServeMux()
 
-	finalHandler := http.HandlerFunc(finalHandler)
-	mux.Handle("/", middlewearOne((middlewearTwo(finalHandler))))
-	http.ListenAndServe(":3000", mux)
+	finalHandler := http.HandlerFunc(final)
+	mux.Handle("/", enforceJSONHandler(finalHandler))
 
+	log.Print("Listening on :3000...")
+	err := http.ListenAndServe(":3000", mux)
+	log.Fatal(err)
 }
