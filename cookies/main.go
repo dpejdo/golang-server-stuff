@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cookie/internal/cookies"
 	"errors"
 	"log"
 	"net/http"
@@ -17,11 +18,13 @@ func main() {
 }
 
 func getCookies(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("exampleCookie")
+	cookie, err := cookies.Read(r, "exampleCookie")
 	if err != nil {
 		switch {
 		case errors.Is(err, http.ErrNoCookie):
 			http.Error(w, err.Error(), http.StatusBadRequest)
+		case errors.Is(err, cookies.ErrInvalidValue):
+			http.Error(w, "invalid cookie", http.StatusBadRequest)
 		default:
 			log.Print(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -30,7 +33,7 @@ func getCookies(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(cookie.Value))
+	w.Write([]byte(cookie))
 
 }
 
@@ -45,7 +48,11 @@ func setCookies(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteLaxMode,
 	}
 
-	http.SetCookie(w, &cookie)
+	err := cookies.Write(w, cookie)
+	if err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 
 	w.Write([]byte("cookie set"))
 }
