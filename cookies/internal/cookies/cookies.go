@@ -1,10 +1,15 @@
 package cookies
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -81,4 +86,32 @@ func SignedRead(r *http.Request, name string, secretKey []byte) (string, error) 
 
 	return value, nil
 
+}
+
+func EncryptedWrite(w http.ResponseWriter, cookie http.Cookie, secretKey []byte) error {
+
+	block, err := aes.NewCipher(secretKey)
+	if err != nil {
+		return err
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return err
+	}
+
+	nonce := make([]byte, aesGCM.NonceSize())
+	_, err = io.ReadFull(rand.Reader, nonce)
+
+	if err != nil {
+		return err
+	}
+
+	plainText := fmt.Sprintf("%s:%s", cookie.Name, cookie.Value)
+
+	encryptedValue := aesGCM.Seal(nonce, nonce, []byte(plainText), nil)
+
+	cookie.Value = string(encryptedValue)
+
+	return Write(w, cookie)
 }
