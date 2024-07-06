@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -114,4 +115,47 @@ func EncryptedWrite(w http.ResponseWriter, cookie http.Cookie, secretKey []byte)
 	cookie.Value = string(encryptedValue)
 
 	return Write(w, cookie)
+}
+
+func EncryptedRead(r *http.Request, name string, secretKey []byte) (string, error) {
+
+	encryptedRead, err := Read(r, name)
+	if err != nil {
+		return "", err
+	}
+
+	block, err := aes.NewCipher(secretKey)
+	if err != nil {
+		return "", err
+	}
+
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	nonceSize := aesGCM.NonceSize()
+
+	if len(encryptedRead) < nonceSize {
+		return "", ErrInvalidValue
+	}
+
+	nonce := encryptedRead[:nonceSize]
+	cipherText := encryptedRead[nonceSize:]
+
+	plainText, err := aesGCM.Open(nil, []byte(nonce), []byte(cipherText), nil)
+	if err != nil {
+		return "", ErrInvalidValue
+	}
+
+	expectedName, value, ok := strings.Cut(string(plainText), ":")
+	if !ok {
+		return "", ErrInvalidValue
+	}
+
+	if expectedName != value {
+		return "", ErrInvalidValue
+	}
+
+	return value, nil
 }
