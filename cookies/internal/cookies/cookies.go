@@ -153,7 +153,7 @@ func EncryptedRead(r *http.Request, name string, secretKey []byte) (string, erro
 		return "", ErrInvalidValue
 	}
 
-	if expectedName != value {
+	if expectedName != name {
 		return "", ErrInvalidValue
 	}
 
