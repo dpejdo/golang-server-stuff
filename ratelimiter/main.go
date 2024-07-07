@@ -8,8 +8,8 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", okHandler)
-
-	log.Print("Listening on :4000")
+	Init()
+	log.Print("Listening on :3000")
 	http.ListenAndServe(":3000", limit(mux))
 }
 
