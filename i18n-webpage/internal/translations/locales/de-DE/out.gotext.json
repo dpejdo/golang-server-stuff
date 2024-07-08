@@ -1,0 +1,10 @@
+{
+    "language": "de-DE",
+    "messages": [
+        {
+            "id": "Welcome!",
+            "message": "Welcome!",
+            "translation": "Willkommen!"
+        }
+    ]
+}
