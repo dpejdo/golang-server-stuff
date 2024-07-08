@@ -5,6 +5,21 @@
             "id": "Welcome!",
             "message": "Welcome!",
             "translation": "Willkommen!"
+        },
+        {
+            "id": "{TotalBookCount} books available",
+            "message": "{TotalBookCount} books available",
+            "translation": "{TotalBookCount} Bücher erhältlich",
+            "placeholders": [
+                {
+                    "id": "TotalBookCount",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "totalBookCount"
+                }
+            ]
         }
     ]
 }

@@ -40,25 +40,32 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"Welcome!\n": 0,
+	"%d books available\n": 1,
+	"Welcome!\n":           0,
 }
 
-var de_DEIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000011,
-} // Size: 32 bytes
+var de_DEIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000011, 0x00000030,
+} // Size: 36 bytes
 
-const de_DEData string = "\x04\x00\x01\n\f\x02Willkommen!"
+const de_DEData string = "" + // Size: 48 bytes
+	"\x04\x00\x01\x0a\x0c\x02Willkommen!\x04\x00\x01\x0a\x1a\x02%[1]d Bücher " +
+	"erhältlich"
 
-var en_GBIndex = []uint32{ // 2 elements
-	0x00000000, 0x0000000e,
-} // Size: 32 bytes
+var en_GBIndex = []uint32{ // 3 elements
+	0x00000000, 0x0000000e, 0x00000029,
+} // Size: 36 bytes
 
-const en_GBData string = "\x04\x00\x01\n\t\x02Welcome!"
+const en_GBData string = "" + // Size: 41 bytes
+	"\x04\x00\x01\x0a\x09\x02Welcome!\x04\x00\x01\x0a\x16\x02%[1]d books avai" +
+	"lable"
 
-var fr_CHIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000011,
-} // Size: 32 bytes
+var fr_CHIndex = []uint32{ // 3 elements
+	0x00000000, 0x00000011, 0x0000002f,
+} // Size: 36 bytes
 
-const fr_CHData string = "\x04\x00\x01\n\f\x02Bienvenue !"
+const fr_CHData string = "" + // Size: 47 bytes
+	"\x04\x00\x01\x0a\x0c\x02Bienvenue !\x04\x00\x01\x0a\x19\x02%[1]d livres " +
+	"disponibles"
 
-// Total table size 144 bytes (0KiB); checksum: 85795B15
+	// Total table size 244 bytes (0KiB); checksum: F465EAF9

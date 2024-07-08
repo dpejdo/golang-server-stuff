@@ -28,6 +28,10 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var totalBookCount = 1_252_794
+
 	p := message.NewPrinter(lang)
 	p.Fprintf(w, "Welcome!\n")
+
+	p.Fprintf(w, "%d books available\n", totalBookCount)
 }
