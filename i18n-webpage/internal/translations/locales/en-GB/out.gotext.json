@@ -35,6 +35,13 @@
                     "expr": "totalBookCount"
                 }
             ]
+        },
+        {
+            "id": "Launching soon",
+            "message": "Launching soon",
+            "translation": "Launching soon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         }
     ]
 }
