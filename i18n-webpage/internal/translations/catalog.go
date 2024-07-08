@@ -45,27 +45,27 @@ var messageKeyToIndex = map[string]int{
 }
 
 var de_DEIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000011, 0x00000030,
+	0x00000000, 0x00000011, 0x0000004f,
 } // Size: 36 bytes
 
-const de_DEData string = "" + // Size: 48 bytes
-	"\x04\x00\x01\x0a\x0c\x02Willkommen!\x04\x00\x01\x0a\x1a\x02%[1]d Bücher " +
-	"erhältlich"
+const de_DEData string = "" + // Size: 79 bytes
+	"\x04\x00\x01\x0a\x0c\x02Willkommen!\x04\x00\x01\x0a9\x14\x01\x81\x01\x00" +
+	"=\x01\x15\x02Ein Buch erhältlich\x00\x1a\x02%[1]d Bücher erhältlich"
 
 var en_GBIndex = []uint32{ // 3 elements
-	0x00000000, 0x0000000e, 0x00000029,
+	0x00000000, 0x0000000e, 0x00000046,
 } // Size: 36 bytes
 
-const en_GBData string = "" + // Size: 41 bytes
-	"\x04\x00\x01\x0a\x09\x02Welcome!\x04\x00\x01\x0a\x16\x02%[1]d books avai" +
-	"lable"
+const en_GBData string = "" + // Size: 70 bytes
+	"\x04\x00\x01\x0a\x09\x02Welcome!\x04\x00\x01\x0a3\x14\x01\x81\x01\x00=" +
+	"\x01\x13\x02One book available\x00\x16\x02%[1]d books available"
 
 var fr_CHIndex = []uint32{ // 3 elements
-	0x00000000, 0x00000011, 0x0000002f,
+	0x00000000, 0x00000011, 0x0000004d,
 } // Size: 36 bytes
 
-const fr_CHData string = "" + // Size: 47 bytes
-	"\x04\x00\x01\x0a\x0c\x02Bienvenue !\x04\x00\x01\x0a\x19\x02%[1]d livres " +
-	"disponibles"
+const fr_CHData string = "" + // Size: 77 bytes
+	"\x04\x00\x01\x0a\x0c\x02Bienvenue !\x04\x00\x01\x0a7\x14\x01\x81\x01\x00" +
+	"=\x01\x14\x02Un livre disponible\x00\x19\x02%[1]d livres disponibles"
 
-	// Total table size 244 bytes (0KiB); checksum: F465EAF9
+	// Total table size 334 bytes (0KiB); checksum: B6A8337D

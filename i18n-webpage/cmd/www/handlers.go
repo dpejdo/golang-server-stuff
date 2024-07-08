@@ -28,7 +28,7 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var totalBookCount = 1_252_794
+	var totalBookCount = 1
 
 	p := message.NewPrinter(lang)
 	p.Fprintf(w, "Welcome!\n")

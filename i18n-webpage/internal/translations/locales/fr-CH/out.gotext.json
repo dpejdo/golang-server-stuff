@@ -9,7 +9,20 @@
         {
             "id": "{TotalBookCount} books available",
             "message": "{TotalBookCount} books available",
-            "translation": "{TotalBookCount} livres disponibles",
+            "translation": {
+                "select": {
+                    "feature": "plural",
+                    "arg": "TotalBookCount",
+                    "cases": {
+                        "=1": {
+                            "msg": "Un livre disponible"
+                        },
+                        "other": {
+                            "msg": "{TotalBookCount} livres disponibles"
+                        }
+                    }
+                }
+            },
             "placeholders": [
                 {
                     "id": "TotalBookCount",

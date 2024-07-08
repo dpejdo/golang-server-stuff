@@ -1,10 +1,12 @@
 {
-  "language": "fr-CH",
+  "language": "en-GB",
   "messages": [
     {
       "id": "Welcome!",
       "message": "Welcome!",
-      "translation": "Bienvenue !"
+      "translation": "Welcome!",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
     },
     {
       "id": "{TotalBookCount} books available",
@@ -15,10 +17,10 @@
           "arg": "TotalBookCount",
           "cases": {
             "=1": {
-              "msg": "Un livre disponible"
+              "msg": "One book available"
             },
             "other": {
-              "msg": "{TotalBookCount} livres disponibles"
+              "msg": "{TotalBookCount} books available"
             }
           }
         }
