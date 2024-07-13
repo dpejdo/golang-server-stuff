@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/sessions"
 )
 
 func main() {
@@ -13,22 +15,32 @@ func main() {
 	http.ListenAndServe(":3000", nil)
 }
 
-func get(w http.ResponseWriter, r *http.Request) {
+var store = sessions.NewCookieStore([]byte("a secret string"))
 
-	value, err := getFlash(w, r, "msg")
+func set(w http.ResponseWriter, r *http.Request) {
+	session, err := store.Get(r, "flash-session")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-
-	if value == nil {
-		fmt.Fprintf(w, "Empty message")
 		return
 	}
 
-	fmt.Fprintf(w, "%s", value)
+	session.AddFlash("This is a flashed message!", "message")
+	session.Save(r, w)
 }
 
-func set(w http.ResponseWriter, r *http.Request) {
-	setFlash(w, "msg", "this is a message")
+func get(w http.ResponseWriter, r *http.Request) {
+	session, err := store.Get(r, "flash-session")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
+	fm := session.Flashes("message")
+	if fm == nil {
+		fmt.Fprint(w, "No flash messages")
+		return
+	}
+
+	session.Save(r, w)
+	fmt.Fprintf(w, "%v", fm[0])
 }
