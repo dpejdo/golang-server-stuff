@@ -6,12 +6,15 @@ import (
 	"net/http"
 	"os"
 
+	"web-page.hg6p.com/internal/models"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
-	infoLog  log.Logger
-	errorLog log.Logger
+	infoLog  *log.Logger
+	errorLog *log.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -23,7 +26,9 @@ func main() {
 		errorLogger.Fatal(err)
 	}
 	defer db.Close()
-	app := &application{infoLog: *infoLogger, errorLog: *errorLogger}
+	app := &application{infoLog: infoLogger, errorLog: errorLogger,
+		snippets: &models.SnippetModel{DB: db},
+	}
 	srv := &http.Server{
 		Addr:     ":3000",
 		ErrorLog: errorLogger,
