@@ -3,13 +3,15 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+	"time"
 
 	"web-page.hg6p.com/internal/models"
 )
 
 type templateData struct {
-	Snippet  *models.Snippet
-	Snippets []*models.Snippet
+	CurrentYear int
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
@@ -24,7 +26,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
 
 		name := filepath.Base(page)
 
-		ts, err := template.ParseFiles("./ui/html/base.html")
+		ts, err := template.New(name).Funcs(funcMap).ParseFiles("./ui/html/base.html")
 		if err != nil {
 			return nil, err
 		}
@@ -41,4 +43,12 @@ func newTemplateCache() (map[string]*template.Template, error) {
 
 	}
 	return cache, nil
+}
+
+func humanDate(t time.Time) string {
+	return t.Format("02 Jan 2006 at 15:04")
+}
+
+var funcMap = template.FuncMap{
+	"humanDate": humanDate,
 }
