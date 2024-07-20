@@ -15,7 +15,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusNotFound)
 		return
 	}
-
 	snippets, err := app.snippets.Latest()
 	if err != nil {
 		app.serverError(w, err)
@@ -45,7 +44,6 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	}
 	data := app.getNewTemplateData()
 	data.Snippet = snippet
-	// Use the new render helper.
 	app.render(w, http.StatusOK, "view.html", data)
 }
 
