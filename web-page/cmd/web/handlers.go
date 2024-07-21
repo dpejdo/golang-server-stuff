@@ -11,6 +11,7 @@ import (
 	"web-page.hg6p.com/internal/validator"
 )
 
+// #region snippet
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 	snippets, err := app.snippets.Latest()
@@ -99,3 +100,24 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		http.StatusSeeOther)
 
 }
+
+//#endregion snippet
+
+// #region user
+func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display")
+}
+func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display Signup")
+}
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display Login")
+}
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display LoginPost")
+}
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Display Logout post")
+}
+
+// #endregion user
