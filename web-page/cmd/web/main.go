@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"database/sql"
 	"html/template"
 	"log"
@@ -45,6 +46,7 @@ func main() {
 	sessionManager := scs.New()
 	sessionManager.Store = mysqlstore.New(db)
 	sessionManager.Lifetime = 12 * time.Hour
+	sessionManager.Cookie.Secure = true
 
 	app := &application{infoLog: infoLogger, errorLog: errorLogger,
 		snippets:       &models.SnippetModel{DB: db},
@@ -52,14 +54,23 @@ func main() {
 		formDecoder:    formDecoder,
 		sessionManager: sessionManager,
 	}
+	tlsConfig := &tls.Config{
+		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+	}
+
 	srv := &http.Server{
-		Addr:     ":3000",
-		ErrorLog: errorLogger,
-		Handler:  app.routes(),
+		Addr:      ":3000",
+		ErrorLog:  errorLogger,
+		Handler:   app.routes(),
+		TLSConfig: tlsConfig,
+
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	app.infoLog.Print("listening on port 3000")
-	err = srv.ListenAndServe()
+	err = srv.ListenAndServeTLS("./tls/localhost.pem", "./tls/localhost-key.pem")
 	app.errorLog.Print(err)
 }
 
