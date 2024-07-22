@@ -20,6 +20,7 @@ import (
 type application struct {
 	infoLog        *log.Logger
 	errorLog       *log.Logger
+	user           *models.UserModel
 	snippets       *models.SnippetModel
 	templateCache  map[string]*template.Template
 	formDecoder    *form.Decoder
@@ -49,6 +50,7 @@ func main() {
 	sessionManager.Cookie.Secure = true
 
 	app := &application{infoLog: infoLogger, errorLog: errorLogger,
+		user:           &models.UserModel{DB: db},
 		snippets:       &models.SnippetModel{DB: db},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
