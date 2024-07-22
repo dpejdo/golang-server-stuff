@@ -15,6 +15,7 @@ type templateData struct {
 	Form        any
 	Flash       string
 	IsAuth      bool
+	CSRFToken   string
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
