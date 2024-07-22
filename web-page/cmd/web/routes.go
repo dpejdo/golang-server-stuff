@@ -19,14 +19,6 @@ func (app *application) routes() http.Handler {
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
 	dynamic := alice.New(app.sessionManager.LoadAndSave)
-	//#region snippets
-	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
-	router.Handler(http.MethodGet, "/snippet/view/:id", dynamic.ThenFunc(app.snippetView))
-	router.Handler(http.MethodGet, "/snippet/create", dynamic.ThenFunc(app.snippetCreate))
-	router.Handler(http.MethodPost, "/snippet/create",
-		dynamic.ThenFunc(app.snippetCreatePost))
-	// #endregion snippets
-
 	// #region user
 	router.Handler(http.MethodGet, "/user/signup",
 		dynamic.ThenFunc(app.userSignup))
@@ -36,8 +28,20 @@ func (app *application) routes() http.Handler {
 		dynamic.ThenFunc(app.userLogin))
 	router.Handler(http.MethodPost, "/user/login",
 		dynamic.ThenFunc(app.userLoginPost))
+	//#endregion
+
+	//#region snippets
+	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
+	router.Handler(http.MethodGet, "/snippet/view/:id", dynamic.ThenFunc(app.snippetView))
+
+	// #endregion snippets
+	protected := dynamic.Append(app.requireAuth)
+	// #region user
+	router.Handler(http.MethodGet, "/snippet/create", protected.ThenFunc(app.snippetCreate))
+	router.Handler(http.MethodPost, "/snippet/create",
+		protected.ThenFunc(app.snippetCreatePost))
 	router.Handler(http.MethodPost, "/user/logout",
-		dynamic.ThenFunc(app.userLogoutPost))
+		protected.ThenFunc(app.userLogoutPost))
 
 	//#endregion
 	standard := alice.New(app.panicRecover, app.logRequest, secureHeader)
