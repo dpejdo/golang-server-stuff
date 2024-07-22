@@ -221,7 +221,18 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 
 }
 func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Display Logout post")
+	err := app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	app.sessionManager.Remove(r.Context(), "authUserID")
+
+	app.sessionManager.Put(r.Context(), "flash", "You have been logged out succesfully!")
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+
 }
 
 // #endregion user

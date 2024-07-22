@@ -51,6 +51,7 @@ func (app *application) getNewTemplateData(r *http.Request) *templateData {
 	return &templateData{
 		CurrentYear: time.Now().Year(),
 		Flash:       app.sessionManager.PopString(r.Context(), "flash"),
+		IsAuth:      app.isAuth(r),
 	}
 }
 
@@ -72,4 +73,8 @@ func (app *application) decodePostFrom(r *http.Request, dst any) error {
 
 	return nil
 
+}
+
+func (app *application) isAuth(r *http.Request) bool {
+	return app.sessionManager.Exists(r.Context(), "authUserID")
 }
