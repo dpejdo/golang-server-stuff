@@ -78,5 +78,11 @@ func (app *application) decodePostFrom(r *http.Request, dst any) error {
 }
 
 func (app *application) isAuth(r *http.Request) bool {
-	return app.sessionManager.Exists(r.Context(), "authUserID")
+	isAuth, ok := r.Context().Value(isAuthContextKey).(bool)
+	if !ok {
+		return false
+	}
+
+	return isAuth
+
 }
